@@ -20,20 +20,26 @@ from scipy.stats import loguniform
 from src.data import split_dataset
 
 
-# Directories
+# Project Directories
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 ARTIFACT_DIR = BASE_DIR / "artifacts"
 ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
 
-TRACKING_DIR = BASE_DIR / "mlruns"
-TRACKING_DIR.mkdir(parents=True, exist_ok=True)
 
-# MLflow configuration
-mlflow.set_tracking_uri(TRACKING_DIR.as_uri())
-mlflow.set_experiment("student-smart-tumor-classification-v2")
+# MLflow SQLite Tracking Configuration
+TRACKING_DB = BASE_DIR / "mlflow.db"
+
+mlflow.set_tracking_uri(
+    f"sqlite:///{TRACKING_DB.as_posix()}"
+)
+
+mlflow.set_experiment(
+    "student-smart-tumor-classification-v2"
+)
 
 
+# Create Machine Learning Pipeline
 def make_pipeline():
     return Pipeline([
         ("scaler", StandardScaler()),
@@ -41,6 +47,7 @@ def make_pipeline():
     ])
 
 
+# Model Evaluation
 def evaluate(model, X_test, y_test):
     predictions = model.predict(X_test)
 
@@ -52,6 +59,7 @@ def evaluate(model, X_test, y_test):
     }
 
 
+# MLflow Experiment Logging
 def log_run(name, model, X_train, y_train, X_test, y_test, params):
 
     with mlflow.start_run(run_name=name) as run:
@@ -64,10 +72,14 @@ def log_run(name, model, X_train, y_train, X_test, y_test, params):
 
         mlflow.log_metrics(metrics)
 
+        # Confusion Matrix
         fig, ax = plt.subplots()
 
         ConfusionMatrixDisplay.from_estimator(
-            model, X_test, y_test, ax=ax
+            model,
+            X_test,
+            y_test,
+            ax=ax
         )
 
         fig.tight_layout()
@@ -79,6 +91,7 @@ def log_run(name, model, X_train, y_train, X_test, y_test, params):
 
         mlflow.log_artifact(str(image_path))
 
+        # Log Model
         mlflow.sklearn.log_model(
             model,
             artifact_path="model"
@@ -91,26 +104,30 @@ def log_run(name, model, X_train, y_train, X_test, y_test, params):
         }
 
 
+# Main Training Function
 def main():
 
     X_train, X_test, y_train, y_test = split_dataset()
 
     results = []
 
-    # Baseline Logistic Regression
+    # 1. Baseline Logistic Regression
     baseline = make_pipeline()
 
     results.append(log_run(
         "baseline_logistic_regression",
         baseline,
-        X_train, y_train, X_test, y_test,
+        X_train,
+        y_train,
+        X_test,
+        y_test,
         {
             "model": "LogisticRegression",
             "max_iter": 3000
         }
     ))
 
-    # Grid Search CV
+    # 2. Grid Search CV
     grid = GridSearchCV(
         make_pipeline(),
         {
@@ -127,7 +144,10 @@ def main():
     results.append(log_run(
         "grid_search_best",
         grid.best_estimator_,
-        X_train, y_train, X_test, y_test,
+        X_train,
+        y_train,
+        X_test,
+        y_test,
         {
             "search": "GridSearchCV",
             "best_params": json.dumps(grid.best_params_),
@@ -135,7 +155,7 @@ def main():
         }
     ))
 
-    # Randomized Search CV
+    # 3. Randomized Search CV
     random_search = RandomizedSearchCV(
         make_pipeline(),
         {
@@ -154,7 +174,10 @@ def main():
     results.append(log_run(
         "random_search_best",
         random_search.best_estimator_,
-        X_train, y_train, X_test, y_test,
+        X_train,
+        y_train,
+        X_test,
+        y_test,
         {
             "search": "RandomizedSearchCV",
             "best_params": json.dumps(random_search.best_params_),
@@ -181,7 +204,8 @@ def main():
 
     # Save Results
     (ARTIFACT_DIR / "results.json").write_text(
-        json.dumps(results, indent=2)
+        json.dumps(results, indent=2),
+        encoding="utf-8"
     )
 
     # Display Results
