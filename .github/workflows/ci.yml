@@ -26,4 +26,4 @@ jobs:
         run: python -m src.train
 
       - name: Run automated tests
-        run: pytest -q
+        run: python -m pytest -q
