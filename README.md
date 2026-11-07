@@ -1,10 +1,14 @@
-# Smart Tumor Classification: From Dataset to Tested API
+Smart MLOps Project – Breast Cancer Classification
 
-## Project Description
-This project uses Machine Learning to classify breast cancer data into malignant and benign categories.
+Project Description
 
-## Technologies Used
-- Python
+This project is an educational Machine Learning and MLOps project. It uses the Breast Cancer Wisconsin dataset to classify tumors into two categories: Malignant and Benign.
+
+The project demonstrates the complete ML workflow, from data preparation and model training to API deployment using Docker.
+
+Technologies Used
+
+- Python 3.11
 - Scikit-learn
 - Pandas and NumPy
 - MLflow
@@ -12,18 +16,119 @@ This project uses Machine Learning to classify breast cancer data into malignant
 - FastAPI
 - Pytest
 - Docker
+- Git and GitHub
 - GitHub Actions
+- Matplotlib
+- SciPy
 
-## Project Features
-- Dataset loading
+Project Features
+
+- Dataset loading and preprocessing
 - Logistic Regression model
 - Grid Search and Randomized Search
-- Model evaluation
+- Model evaluation using performance metrics
 - MLflow experiment tracking
-- DVC data tracking
+- DVC data version control
+- Model saving using Joblib
 - FastAPI prediction API
-- Automated testing
-- Docker deployment
+- Automated testing using Pytest
+- Docker-based deployment
+- GitHub Actions CI pipeline
 
-## Important Note
-This is an educational project only. It is not a medical diagnosis system.
+Project Structure
+
+smart-mlops-project/
+│
+├── artifacts/
+│   ├── best_model.joblib
+│   └── results.json
+│
+├── data/
+├── feature_repo/
+├── src/
+│   ├── api.py
+│   ├── data.py
+│   └── train.py
+│
+├── tests/
+│   ├── test_api.py
+│   └── test_data.py
+│
+├── Dockerfile
+├── requirements.txt
+├── requirements-docker.txt
+├── dvc.yaml
+└── README.md
+
+Installation and Setup
+
+Clone the repository:
+
+git clone https://github.com/sayalipatil0206/smart-mlops-project-new.git
+
+Move into the project folder:
+
+cd smart-mlops-project-new
+
+Create a virtual environment:
+
+python -m venv .venv
+
+Activate the environment:
+
+.venv\Scripts\activate
+
+Install dependencies:
+
+pip install -r requirements.txt
+
+Model Training
+
+Run the following command to train the machine learning model:
+
+python -m src.train
+
+The trained model and evaluation results are saved in the "artifacts" folder.
+
+Run the API
+
+Start the FastAPI application:
+
+uvicorn src.api:app --reload
+
+Open the API documentation:
+
+http://127.0.0.1:8000/docs
+
+API Endpoints
+
+- "GET /health" – Checks API and model status.
+- "POST /predict" – Predicts the class using 30 numerical features.
+
+Run Tests
+
+Execute the test cases:
+
+python -m pytest -q
+
+Docker Deployment
+
+Build the Docker image:
+
+docker build -t smart-mlops-api .
+
+Run the Docker container:
+
+docker run -d -p 8000:8000 --name smart-mlops-container smart-mlops-api
+
+Open the API documentation:
+
+http://localhost:8000/docs
+
+Check API health:
+
+http://localhost:8000/health
+
+Important Note
+
+This project is developed for educational purposes only. The predictions are based on a sample dataset and must not be used for real medical diagnosis or treatment decisions.
