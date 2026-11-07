@@ -1,0 +1,22 @@
+schema: '2.0'
+stages:
+  train:
+    cmd: python -m src.train
+    deps:
+    - path: src/data.py
+      hash: md5
+      md5: 234935d503075e4c3dd115a0682dfc6e
+      size: 717
+    - path: src/train.py
+      hash: md5
+      md5: e2d8f771467ce987c994f0dd3663ba47
+      size: 5373
+    outs:
+    - path: artifacts/best_model.joblib
+      hash: md5
+      md5: f37239eabbc92333230c130e1d45ecd4
+      size: 3073
+    - path: artifacts/results.json
+      hash: md5
+      md5: 3f7cf32ff0ed48d181db61f9556694ad
+      size: 722
