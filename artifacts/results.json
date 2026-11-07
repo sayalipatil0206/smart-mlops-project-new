@@ -1,6 +1,6 @@
 [
   {
-    "run_id": "b4d8cc313b2144e6858ba143e61a6c20",
+    "run_id": "1b1a5d72d2564b928dd10c0ad6115812",
     "name": "baseline_logistic_regression",
     "accuracy": 0.9824561403508771,
     "precision": 0.9861111111111112,
@@ -8,7 +8,7 @@
     "f1": 0.9861111111111112
   },
   {
-    "run_id": "e068e8a6ee804e189d9ce712999db22d",
+    "run_id": "369a05d821c7446e8023c27e50caa5f4",
     "name": "grid_search_best",
     "accuracy": 0.9824561403508771,
     "precision": 0.9861111111111112,
@@ -16,7 +16,7 @@
     "f1": 0.9861111111111112
   },
   {
-    "run_id": "8588722025bd49e9b6875b4fa6775099",
+    "run_id": "7e96cc9214d943af977195941f9cdf94",
     "name": "random_search_best",
     "accuracy": 0.9824561403508771,
     "precision": 0.9861111111111112,
