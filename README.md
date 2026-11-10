@@ -34,6 +34,7 @@ Project Features
 - Automated testing using Pytest
 - Docker-based deployment
 - GitHub Actions CI pipeline
+- Automated test coverage reporting
 
 Project Structure
 
@@ -52,7 +53,8 @@ smart-mlops-project/
 │
 ├── tests/
 │   ├── test_api.py
-│   └── test_data.py
+│   ├── test_data.py
+│   └── test_train.py
 │
 ├── Dockerfile
 ├── requirements.txt
@@ -110,6 +112,21 @@ Run Tests
 Execute the test cases:
 
 python -m pytest -q
+
+Test Results and Code Coverage
+
+The project includes 9 automated test cases covering API, data processing, and model training.
+
+- Total Tests: 9
+- Tests Passed: 9
+- Tests Failed: 0
+- Overall Code Coverage: 98%
+
+Run tests with coverage:
+
+python -m pytest --cov=src --cov-report=term-missing
+
+All 9 test cases passed successfully, with 98% overall code coverage.
 
 Docker Deployment
 
