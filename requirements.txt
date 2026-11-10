@@ -11,3 +11,4 @@ dvc
 feast
 matplotlib
 scipy
+pytest-cov

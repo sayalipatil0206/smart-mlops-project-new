@@ -26,4 +26,4 @@ jobs:
         run: python -m src.train
 
       - name: Run automated tests
-        run: python -m pytest -q
+        run: python -m pytest --cov=src --cov-report=term-missing
