@@ -7,6 +7,7 @@ COPY requirements-docker.txt .
 RUN pip install --no-cache-dir -r requirements-docker.txt
 
 COPY src ./src
+
 COPY artifacts ./artifacts
 
 EXPOSE 8000
