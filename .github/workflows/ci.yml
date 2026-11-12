@@ -30,3 +30,18 @@ jobs:
       
       - name: Build Docker image
         run: docker build -t smart-mlops-api .
+
+      - name: Run Docker container
+        run: docker run -d --name smart-mlops-test -p 8000:8000 smart-mlops-api
+
+      - name: Check container health
+        run: |
+          for i in {1..10}; do
+            if curl --fail http://localhost:8000/health; then
+              docker stop smart-mlops-test
+              exit 0
+            fi
+            sleep 3
+          done
+          docker logs smart-mlops-test
+          exit 1
